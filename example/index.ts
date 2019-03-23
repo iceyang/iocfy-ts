@@ -1,14 +1,3 @@
-Typescript简单版本的IoC
-
-## Installation
-
-```bash
-$ npm i -s iocfy-ts
-```
-
-## Getting Started
-
-```ts
 import iocfy from 'iocfy-ts';
 import { Bean, Inject } from 'iocfy-ts';
 
@@ -36,4 +25,3 @@ iocfy.init();
 
 const userService = <UserService>iocfy.beanFactory.get('UserService');
 userService.printUser();
-```

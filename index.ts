@@ -1,56 +1,29 @@
-type Constructor = { new(...args:any[]):{} };
+import ApplicationContext from './lib/context';
+import { Constructor, BeanConfig, PropertyConfig } from './lib/context';
 
-class BeanConfig {
-  initialConstructor: Constructor;
-  properties: { [index: string]: string } = {};
-  beans: { [index: string]: string } = {};
+const context = new ApplicationContext();
 
-  constructor(initialConstructor: Constructor) {
-    this.initialConstructor = initialConstructor;
-  }
+export function Bean(beanName?: string) {
+  return function(constructor: Constructor) {
+    const name = beanName || constructor.name;
+    context.addBeanConfig(
+      name,
+      new BeanConfig(constructor),
+    );
+  };
 }
 
-class ApplicationConfig {
-  private beanConfigs: { [name: string]: BeanConfig } = {};
-  
-  addBeanConfig(name: string, beanConfig: BeanConfig) {
-    this.beanConfigs[name] = beanConfig;
-  }
+export function Inject(injectBeanName?: string) {
+  return function (target: any, property: string, index?: number): void {
+    const beanName = target.constructor.name;
+    context.addPropertyConfig(
+      beanName,
+      new PropertyConfig(
+        beanName,
+        property,
+        injectBeanName || property),
+    );
+  };
 }
 
-const applicationConfig = new ApplicationConfig();
-
-function Bean<T extends Constructor>(constructor: T) {
-  const name = constructor.name;
-  applicationConfig.addBeanConfig(
-    name,
-    new BeanConfig(constructor),
-  );
-}
-
-
-const propertyMetadataKey = Symbol("Property");
-
-function Inject(beanName?: string) {
-  return function(target: any, setter: string, descriptor: PropertyDescriptor) {
-    const property =
-      beanName ? beanName : setter.replace(/set(.{1})(.*)/, (_, $2, $3) => $2.toLowerCase() + $3);
-    console.log(property);
-  }
-  // const key = Symbol(name);
-  // console.log(key);
-  // return Reflect.metadata(key, name);
-}
-
-@Bean
-class PersonDao {
-}
-
-@Bean
-class PersonService {
-  name: string;
-  personDao: PersonDao;
-
-  @Inject()
-  private setPersonDao(personDao: PersonDao) { this.personDao = personDao; }
-}
+export default context;
