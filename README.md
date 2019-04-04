@@ -55,7 +55,7 @@ iocfy can print the debug info, to enable it, set envrionment `DEBUG` with value
 eg:
 
 ```
-$ export DEBUG=iocfy.
+$ export DEBUG=iocfy
 $ node index.js
 ```
 
@@ -72,6 +72,6 @@ Make sure the files which have @Bean are loaded. You can print debug info to see
 If the beans were loaded, the debug info would like this:
 
 ```
-iocfy Init bean: UserDao. +0ms
-iocfy Init bean: UserService. +0ms
+$ iocfy Init bean: UserDao. +0ms
+$ iocfy Init bean: UserService. +0ms
 ```
