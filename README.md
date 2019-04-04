@@ -48,3 +48,30 @@ iocfy.init();
 const userService = <UserService>iocfy.get('UserService');
 userService.printUser();
 ```
+
+compile and run.
+
+iocfy can print the debug info, to enable it, set envrionment `DEBUG` with value `iocfy`,
+eg:
+
+```
+$ export DEBUG=iocfy.
+$ node index.js
+```
+
+or
+
+```
+$ DEBUG=iocfy node index.js
+```
+
+## FAQ
+### I got a undefined value When I use iocfy.get.
+
+Make sure the files which have @Bean are loaded. You can print debug info to see it.
+If the beans were loaded, the debug info would like this:
+
+```
+iocfy Init bean: UserDao. +0ms
+iocfy Init bean: UserService. +0ms
+```

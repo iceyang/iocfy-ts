@@ -1,4 +1,5 @@
 import BeanFactory from './bean_factory';
+import DEBUG from 'debug';
 
 export type Constructor = { new(...args:any[]):{} };
 
@@ -44,8 +45,12 @@ export default class ApplicationContext {
   }
 
   private initBean() {
+    if (Object.keys(this.beanConfigs).length === 0) {
+      console.warn('(iocfy) There is no bean be configured, may be you want to check again.')
+    }
     for (let beanName in this.beanConfigs) {
       const beanConfig = this.beanConfigs[beanName];
+      DEBUG('iocfy')(`Init bean: ${beanName}.`)
       this.beanFactory.set(beanName, new beanConfig.initialConstructor());
     }
   }
