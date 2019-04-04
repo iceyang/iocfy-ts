@@ -23,10 +23,14 @@ export class PropertyConfig {
 }
 
 export default class ApplicationContext {
-  beanFactory: BeanFactory = new BeanFactory();
+  private beanFactory: BeanFactory = new BeanFactory();
   private beanConfigs: { [beanName: string]: BeanConfig } = {};
   private propertyConfigs: { [beanName: string]: PropertyConfig[] } = {};
   private initialized: boolean = false;
+
+  get(beanName: string) {
+    return this.beanFactory.get(beanName);
+  }
   
   addBeanConfig(beanName: string, beanConfig: BeanConfig) {
     this.beanConfigs[beanName] = beanConfig;

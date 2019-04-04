@@ -1,8 +1,8 @@
 {
   "name": "iocfy-ts",
-  "version": "0.1.0",
-  "description": "A simple Ioc of Typescript",
-  "main": "index.js",
+  "version": "0.2.0",
+  "description": "Simple IoC implementation of TypeScript.",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

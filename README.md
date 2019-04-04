@@ -45,6 +45,6 @@ class UserService {
 
 iocfy.init();
 
-const userService = <UserService>iocfy.beanFactory.get('UserService');
+const userService = <UserService>iocfy.get('UserService');
 userService.printUser();
 ```
