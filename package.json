@@ -1,6 +1,6 @@
 {
   "name": "iocfy-ts",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Simple IoC implementation of TypeScript.",
   "main": "dist/index.js",
   "scripts": {
