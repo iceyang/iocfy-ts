@@ -12,10 +12,18 @@ $ npm i -s iocfy-ts
 import iocfy from 'iocfy-ts';
 import { Bean, Inject } from 'iocfy-ts';
 
+// by default, the bean's name is the class name. 
 @Bean()
 class UserDao {
   findUser() {
     return { name: 'Justin', sex: 'male', };
+  }
+}
+
+// or you can specify the bean name.
+@Bean('otherService')
+class OtherService {
+  doSomeThing() {
   }
 }
 
@@ -25,6 +33,9 @@ class UserService {
   
   @Inject('UserDao')
   userDao: UserDao;
+
+  @Inject('otherService')
+  otherService: OtherService;
 
   printUser() {
     const user = this.userDao.findUser();
