@@ -1,4 +1,4 @@
-Typescript简单版本的IoC
+Simple IoC implementation of TypeScript.
 
 ## Installation
 
