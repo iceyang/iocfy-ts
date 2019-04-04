@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const bean_factory_1 = __importDefault(require("./bean_factory"));
+const debug_1 = __importDefault(require("debug"));
 class BeanConfig {
     constructor(initialConstructor) {
         this.initialConstructor = initialConstructor;
@@ -38,8 +39,12 @@ class ApplicationContext {
         this.propertyConfigs[beanName].push(propertyConfig);
     }
     initBean() {
+        if (Object.keys(this.beanConfigs).length === 0) {
+            console.warn('(iocfy) There is no bean be configured, may be you want to check again.');
+        }
         for (let beanName in this.beanConfigs) {
             const beanConfig = this.beanConfigs[beanName];
+            debug_1.default('iocfy')(`Init bean: ${beanName}.`);
             this.beanFactory.set(beanName, new beanConfig.initialConstructor());
         }
     }
