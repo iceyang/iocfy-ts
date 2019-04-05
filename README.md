@@ -3,7 +3,7 @@ Simple IoC implementation of TypeScript.
 ## Installation
 
 ```bash
-$ npm i -s iocfy-ts
+$ npm i -S iocfy-ts
 ```
 
 ## Getting Started
