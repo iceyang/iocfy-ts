@@ -1,10 +1,18 @@
-import iocfy from 'iocfy-ts';
-import { Bean, Inject } from 'iocfy-ts';
+import iocfy from '../';
+import { Bean, Inject } from '../';
 
+// by default, the bean's name is the class name. 
 @Bean()
 class UserDao {
   findUser() {
     return { name: 'Justin', sex: 'male', };
+  }
+}
+
+// or you can specify the bean name.
+@Bean('otherService')
+class OtherService {
+  doSomeThing() {
   }
 }
 
@@ -15,6 +23,9 @@ class UserService {
   @Inject('UserDao')
   userDao: UserDao;
 
+  @Inject('otherService')
+  otherService: OtherService;
+
   printUser() {
     const user = this.userDao.findUser();
     console.log(user);
@@ -23,5 +34,5 @@ class UserService {
 
 iocfy.init();
 
-const userService = <UserService>iocfy.beanFactory.get('UserService');
+const userService = <UserService>iocfy.get('UserService');
 userService.printUser();
