@@ -28,9 +28,6 @@ class UserService {
   @Inject('UserDao')
   userDao: UserDao;
 
-  @Inject('otherService')
-  otherService: OtherService;
-
   printUser() {
     const user = this.userDao.findUser();
     console.log(user);
@@ -41,7 +38,8 @@ class UserService {
   }
 }
 
-@Bean()
+// you can assignment the normal properties.
+@Bean('UserController', { limit: 20 })
 class UserController {
   limit: number;
   
