@@ -21,13 +21,7 @@ class UserDao {
 }
 
 // or you can specify the bean name.
-@Bean('otherService')
-class OtherService {
-  doSomeThing() {
-  }
-}
-
-@Bean()
+@Bean('userService')
 class UserService {
   name: string;
   
@@ -41,6 +35,22 @@ class UserService {
     const user = this.userDao.findUser();
     console.log(user);
   }
+  
+  findUser(id: number) {
+    return this.userDao.findUser();
+  }
+}
+
+@Bean()
+class UserController {
+  limit: number;
+  
+  @Inject('userService')
+  userService: UserService;
+  
+  queryById() {
+    return this.userService.findUser(1);
+  }
 }
 
 iocfy.init();
@@ -51,7 +61,7 @@ userService.printUser();
 
 compile and run.
 
-iocfy can print the debug info, to enable it, set envrionment `DEBUG` with value `iocfy`,
+If you want to see the debug info, set environment `DEBUG` to `iocfy`,
 eg:
 
 ```
