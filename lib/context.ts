@@ -4,45 +4,55 @@ import DEBUG from 'debug';
 export type Constructor = { new(...args:any[]):{} };
 
 export class BeanConfig {
-  initialConstructor: Constructor;
+  private initialConstructor: Constructor;
 
   constructor(initialConstructor: Constructor) {
     this.initialConstructor = initialConstructor;
   }
+
+  newBeanInstance(): object {
+    return new this.initialConstructor();
+  }
+}
+
+export class FieldConfig {
+  private beanName: string;
+  private field: string;
+  private value: any;
+
+  constructor(beanName: string, field: string, value: any) {
+    this.beanName = beanName;
+    this.field = field;
+    this.value = value;
+  }
+
+  getField() { return this.field; }
+
+  getValue() { return this.value; }
 }
 
 export class PropertyConfig {
-  beanName: string;
-  property: string;
-  injectBeanName: string;
+  private beanName: string;
+  private property: string;
+  private injectBeanName: string;
 
   constructor(beanName: string, property: string, injectBeanName: string) {
     this.beanName = beanName;
     this.property = property;
     this.injectBeanName = injectBeanName;
   }
+
+  getProperty() { return this.property; }
+
+  getInjectBeanName() { return this.injectBeanName; }
 }
 
 export default class ApplicationContext {
   private beanFactory: BeanFactory = new BeanFactory();
   private beanConfigs: { [beanName: string]: BeanConfig } = {};
+  private fieldConfigs: { [beanName: string]: FieldConfig[] } = {};
   private propertyConfigs: { [beanName: string]: PropertyConfig[] } = {};
   private initialized: boolean = false;
-
-  get(beanName: string) {
-    return this.beanFactory.get(beanName);
-  }
-  
-  addBeanConfig(beanName: string, beanConfig: BeanConfig) {
-    this.beanConfigs[beanName] = beanConfig;
-  }
-
-  addPropertyConfig(beanName: string, propertyConfig: PropertyConfig) {
-    if (!this.propertyConfigs[beanName]) {
-      this.propertyConfigs[beanName] = [];
-    }
-    this.propertyConfigs[beanName].push(propertyConfig);
-  }
 
   private initBean() {
     if (Object.keys(this.beanConfigs).length === 0) {
@@ -51,21 +61,36 @@ export default class ApplicationContext {
     for (let beanName in this.beanConfigs) {
       const beanConfig = this.beanConfigs[beanName];
       DEBUG('iocfy')(`Init bean: ${beanName}.`)
-      this.beanFactory.set(beanName, new beanConfig.initialConstructor());
+      this.beanFactory.set(beanName, beanConfig.newBeanInstance());
+    }
+  }
+
+  private initField() {
+    for (let beanName in this.fieldConfigs) {
+      const bean = this.beanFactory.get(beanName);
+
+      for (let fieldConfig of this.fieldConfigs[beanName]) {
+        Reflect.defineProperty(bean, fieldConfig.getField(), {
+          value: fieldConfig.getValue(), enumerable: true,
+        });
+      }
     }
   }
 
   private initProperty() {
     for (let beanName in this.propertyConfigs) {
-      const bean = this.beanFactory.get(beanName);
+      const beans = this.beanFactory.getByConstructorName(beanName);
 
       for (let propertyConfig of this.propertyConfigs[beanName]) {
-        const { property, injectBeanName } = propertyConfig;
+        const property = propertyConfig.getProperty();
+        const injectBeanName = propertyConfig.getInjectBeanName();
         const injectBean = this.beanFactory.get(injectBeanName);
         if (!injectBean) throw new Error(`bean ${injectBeanName} is not exists, please check your Inject config again`);
-        Reflect.defineProperty(bean, property, {
-          value: injectBean, 
-          enumerable: true,
+        beans.forEach(bean => {
+          Reflect.defineProperty(bean, property, {
+            value: injectBean, 
+            enumerable: true,
+          });
         });
       }
     }
@@ -76,9 +101,32 @@ export default class ApplicationContext {
       throw new Error('iocfy is initialized.');
 
     this.initBean();
+    this.initField();
     this.initProperty();
 
     this.initialized = true;
+  }
+
+  get(beanName: string) {
+    return this.beanFactory.get(beanName);
+  }
+  
+  addBeanConfig(beanName: string, beanConfig: BeanConfig) {
+    this.beanConfigs[beanName] = beanConfig;
+  }
+
+  addFieldConfig(beanName: string, fieldConfig: FieldConfig) {
+    if (!this.fieldConfigs[beanName]) {
+      this.fieldConfigs[beanName] = [];
+    }
+    this.fieldConfigs[beanName].push(fieldConfig);
+  }
+
+  addPropertyConfig(beanName: string, propertyConfig: PropertyConfig) {
+    if (!this.propertyConfigs[beanName]) {
+      this.propertyConfigs[beanName] = [];
+    }
+    this.propertyConfigs[beanName].push(propertyConfig);
   }
 }
 
