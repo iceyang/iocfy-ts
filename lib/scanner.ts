@@ -1,8 +1,15 @@
 import fs from 'fs';
+import DEBUG from 'debug';
+
+const debug = DEBUG('iocfy:scanner');
 
 function load(filepath: string) {
+  if (!fs.existsSync(filepath)) {
+    throw new Error(`filepath ${filepath} is not exists`);
+  }
   const stat = fs.statSync(filepath);
-  console.log(stat);
+  debug('isFile: ', stat.isFile());
+  debug('isDirectory: ', stat.isDirectory());
 }
 
 export interface ScanOption {

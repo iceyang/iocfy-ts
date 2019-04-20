@@ -4,6 +4,8 @@ import BeanFactory from './bean_factory';
 import { BeanConfig, FieldConfig, PropertyConfig } from './config';
 import { Scanner, ScanOption } from './scanner';
 
+const debug = DEBUG('iocfy:context');
+
 export default class ApplicationContext {
   private beanFactory: BeanFactory = new BeanFactory();
   private beanConfigs: { [beanName: string]: BeanConfig } = {};
@@ -17,7 +19,7 @@ export default class ApplicationContext {
     }
     for (let beanName in this.beanConfigs) {
       const beanConfig = this.beanConfigs[beanName];
-      DEBUG('iocfy')(`Init bean: ${beanName}.`)
+      debug(`Init bean: ${beanName}`)
       this.beanFactory.set(beanName, beanConfig.newBeanInstance());
     }
   }

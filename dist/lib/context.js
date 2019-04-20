@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const debug_1 = __importDefault(require("debug"));
 const bean_factory_1 = __importDefault(require("./bean_factory"));
 const scanner_1 = require("./scanner");
+const debug = debug_1.default('iocfy:context');
 class ApplicationContext {
     constructor() {
         this.beanFactory = new bean_factory_1.default();
@@ -20,7 +21,7 @@ class ApplicationContext {
         }
         for (let beanName in this.beanConfigs) {
             const beanConfig = this.beanConfigs[beanName];
-            debug_1.default('iocfy')(`Init bean: ${beanName}.`);
+            debug(`Init bean: ${beanName}`);
             this.beanFactory.set(beanName, beanConfig.newBeanInstance());
         }
     }
