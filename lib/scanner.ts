@@ -1,29 +1,20 @@
-import _ from 'lodash';
 import fs from 'fs';
 import path from 'path';
 import DEBUG from 'debug';
 
 const debug = DEBUG('iocfy:scanner');
 
-function isTargerFileType(filepath: string, filetypes: string[]) {
-  const splits = filepath.split('.');
-  const isTarget = filetypes.reduce((isTarget, filetype) => {
-    const filetypeSplit = filetype.split('.');
-    const match = _.isEqual(
-      splits.slice(splits.length - filetypeSplit.length, splits.length),
-      filetypeSplit
-    );
-    return isTarget || match;
-  }, false);
-
-  return isTarget;
+function isTargerFileType(filepath: string, filetypes: string[]): boolean {
+  const regStr = `\\.(${filetypes.join('|')})$`;
+  const reg = new RegExp(regStr);
+  return reg.test(filepath);
 }
 
 function load(filepath: string, option: ScanOption) {
   const stat = fs.statSync(filepath);
   if (stat.isFile() && isTargerFileType(filepath, option.filetypes)) {
     debug(`load file: ${filepath}`);
-  //  require(filepath);
+    require(filepath);
     return;
   }
   if (!option.recursive) return;

@@ -55,7 +55,7 @@ class ApplicationContext {
     }
     scan(path, scanOption) {
         const recursive = scanOption && scanOption.recursive || true;
-        const filetypes = scanOption && scanOption.filetypes || ['ts', 'js'];
+        const filetypes = scanOption && scanOption.filetypes || ['js'];
         scanner_1.Scanner(path, { recursive, filetypes });
     }
     init() {
