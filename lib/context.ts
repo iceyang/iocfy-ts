@@ -56,7 +56,9 @@ export default class ApplicationContext {
   }
 
   scan(path: string, scanOption?: ScanOption) {
-    Scanner(path, scanOption || { recursive: true });
+    const recursive = scanOption && scanOption.recursive || true;
+    const filetypes = scanOption && scanOption.filetypes || ['ts', 'js'];
+    Scanner(path, { recursive, filetypes });
   }
 
   init() {
