@@ -3,8 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const bean_factory_1 = __importDefault(require("./bean_factory"));
 const debug_1 = __importDefault(require("debug"));
+const bean_factory_1 = __importDefault(require("./bean_factory"));
+const scanner_1 = require("./scanner");
 class ApplicationContext {
     constructor() {
         this.beanFactory = new bean_factory_1.default();
@@ -50,6 +51,9 @@ class ApplicationContext {
                 });
             }
         }
+    }
+    scan(path, scanOption) {
+        scanner_1.Scanner(path, scanOption || { recursive: true });
     }
     init() {
         if (this.initialized)

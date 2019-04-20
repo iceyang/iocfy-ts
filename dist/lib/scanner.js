@@ -8,7 +8,8 @@ function load(filepath) {
     const stat = fs_1.default.statSync(filepath);
     console.log(stat);
 }
-function Scanner(path) {
+function Scanner(path, option) {
     load(path);
 }
+exports.Scanner = Scanner;
 exports.default = Scanner;

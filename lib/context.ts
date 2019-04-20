@@ -1,6 +1,8 @@
+import DEBUG from 'debug';
+
 import BeanFactory from './bean_factory';
 import { BeanConfig, FieldConfig, PropertyConfig } from './config';
-import DEBUG from 'debug';
+import { Scanner, ScanOption } from './scanner';
 
 export default class ApplicationContext {
   private beanFactory: BeanFactory = new BeanFactory();
@@ -49,6 +51,10 @@ export default class ApplicationContext {
         });
       }
     }
+  }
+
+  scan(path: string, scanOption?: ScanOption) {
+    Scanner(path, scanOption || { recursive: true });
   }
 
   init() {

@@ -1,4 +1,5 @@
 import { BeanConfig, FieldConfig, PropertyConfig } from './config';
+import { ScanOption } from './scanner';
 export default class ApplicationContext {
     private beanFactory;
     private beanConfigs;
@@ -8,6 +9,7 @@ export default class ApplicationContext {
     private initBean;
     private initField;
     private initProperty;
+    scan(path: string, scanOption?: ScanOption): void;
     init(): void;
     get(beanName: string): object;
     addBeanConfig(beanName: string, beanConfig: BeanConfig): void;
