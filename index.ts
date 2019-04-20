@@ -1,5 +1,5 @@
 import ApplicationContext from './lib/context';
-import { BeanConfig, Constructor, FieldConfig, PropertyConfig } from './lib/context';
+import { BeanConfig, Constructor, FieldConfig, PropertyConfig } from './lib/config';
 
 const context = new ApplicationContext();
 

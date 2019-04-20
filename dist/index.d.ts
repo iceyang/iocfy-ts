@@ -1,5 +1,5 @@
 import ApplicationContext from './lib/context';
-import { Constructor } from './lib/context';
+import { Constructor } from './lib/config';
 declare const context: ApplicationContext;
 export declare function Bean(beanName?: string, fields?: {
     [field: string]: any;
