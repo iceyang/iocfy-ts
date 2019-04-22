@@ -76,10 +76,12 @@ $ DEBUG=iocfy node index.js
 ## FAQ
 ### I got a undefined value When I use iocfy.get.
 
+Sometimes you may find the @Bean and @Inject are not efficient. Because in nodejs process, the decorators work until the source file is loaded.
+
 Make sure the files which have @Bean are loaded. You can print debug info to see it.
 If the beans were loaded, the debug info would like this:
 
 ```
-$ iocfy Init bean: UserDao. +0ms
-$ iocfy Init bean: UserService. +0ms
+ iocfy Init bean: UserDao. +0ms
+ iocfy Init bean: UserService. +0ms
 ```
