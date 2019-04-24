@@ -23,10 +23,9 @@ class UserDao {
 // or you can specify the bean name.
 @Bean('userService')
 class UserService {
-  name: string;
+  private name: string;
   
-  @Inject('UserDao')
-  userDao: UserDao;
+  @Inject('UserDao') private userDao: UserDao;
 
   printUser() {
     const user = this.userDao.findUser();
@@ -43,8 +42,7 @@ class UserService {
 class UserController {
   limit: number;
   
-  @Inject('userService')
-  userService: UserService;
+  @Inject('userService') private userService: UserService;
   
   queryById() {
     return this.userService.findUser(1);
@@ -71,6 +69,20 @@ or
 
 ```
 $ DEBUG=iocfy node index.js
+```
+
+## Scanning your beans
+In most time, our project is big and the bean definitions are not in the same source file.
+
+The source files are not really loaded when we use `import`.
+
+To solve this, `iocfy` provide the scanner, assume your source files in folder `__dirname`,  you can use scanner like this:
+
+```
+// call scan function before init.
+iocfy.scan(__dirname);
+
+iocfy.init();
 ```
 
 ## FAQ
