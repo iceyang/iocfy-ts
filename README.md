@@ -76,19 +76,19 @@ In most time, our project is big and the bean definitions are not in the same so
 
 The source files are not really loaded when we use `import`.
 
-To solve this, `iocfy` provide the scanner. Assuming that your source files in folder `__dirname`, you can use scanner like this:
+To solve this, `iocfy` provides the scanner. Assuming that your source files in folder `__dirname`, you can use scanner like this:
 
 ```
-// call scan function before init.
+// Use scan function before init.
 iocfy.scan(__dirname);
 
 iocfy.init();
 ```
 
 ## FAQ
-### I got a undefined value hen I use iocfy.get.
+### I got a undefined value when I use iocfy.get.
 
-Sometimes you may find the @Bean and @Inject are not efficient. Because in nodejs process, the decorators work until the source file is loaded.
+Sometimes you may find the @Bean and @Inject are not efficient. In nodejs process, the decorators take effect only  after the source file has been loaded.
 
 Make sure the files which have @Bean are loaded. You can print debug info to see it.
 If the beans were loaded, the debug info would like this:
