@@ -76,7 +76,7 @@ In most time, our project is big and the bean definitions are not in the same so
 
 The source files are not really loaded when we use `import`.
 
-To solve this, `iocfy` provide the scanner, assume your source files in folder `__dirname`,  you can use scanner like this:
+To solve this, `iocfy` provide the scanner. Assuming that your source files in folder `__dirname`, you can use scanner like this:
 
 ```
 // call scan function before init.
