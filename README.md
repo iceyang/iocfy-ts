@@ -86,7 +86,7 @@ iocfy.init();
 ```
 
 ## FAQ
-### I got a undefined value When I use iocfy.get.
+### I got a undefined value hen I use iocfy.get.
 
 Sometimes you may find the @Bean and @Inject are not efficient. Because in nodejs process, the decorators work until the source file is loaded.
 
